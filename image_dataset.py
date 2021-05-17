@@ -1,10 +1,9 @@
 from requests import exceptions
-from keys import BING_IMAGE_API
+from api_keys import BING_IMAGE_API
 import requests
 import cv2
 import os
 
-API_KEY = BING_IMAGE_API
 MAX_RESULTS = 2
 GROUP_SIZE = 5
 
@@ -25,7 +24,7 @@ def create_image_dataset(actor):
         print(e)
     else:
         # set the headers and search parameters
-        headers = {"Ocp-Apim-Subscription-Key": API_KEY}
+        headers = {"Ocp-Apim-Subscription-Key": BING_IMAGE_API}
         params = {"q": actor, "offset": 0, "count": GROUP_SIZE}
         # make the search
         print("[INFO] searching Bing API for '{}'".format(actor))
@@ -83,4 +82,3 @@ def create_image_dataset(actor):
                     if type(e) in EXCEPTIONS:
                         print("[INFO] skipping: {}".format(v["contentUrl"]))
                         continue
-
