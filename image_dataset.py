@@ -4,7 +4,7 @@ import requests
 import cv2
 import os
 
-MAX_RESULTS = 2
+MAX_RESULTS = 5
 GROUP_SIZE = 5
 
 URL = "https://api.bing.microsoft.com/v7.0/images/search"
@@ -16,11 +16,11 @@ EXCEPTIONS = {IOError, FileNotFoundError, exceptions.RequestException,
 
 
 def create_image_dataset(actor):
-    dir_path = "./dataset/actors/" + actor
+    dir_path = "./dataset/actors/" + str(actor).lower().replace(" ", "_")
     try:
         os.makedirs(dir_path)
     except OSError as e:
-        print(f"Creating of the directory {dir_path} failed")
+        print(f"[Error] Creating of the directory {dir_path} failed")
         print(e)
     else:
         # set the headers and search parameters

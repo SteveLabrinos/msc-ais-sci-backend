@@ -1,7 +1,22 @@
 from flask import Flask
 from image_dataset import create_image_dataset
+from encode_faces import face_encoding
 
-create_image_dataset("Keanu Reeves")
+movie_actors = [
+    "Alan Grant",
+    "Claire Dearing",
+    "Ellie Sattler",
+    "Ian Malcolm",
+    "John Hammond",
+    "Owen Grady"
+]
+
+for actor in movie_actors:
+    dataset_creation = create_image_dataset(actor)
+
+# if the movie is not in the DB calculate the image encodings
+face_encoding("jurassic_park")
+
 
 # app = Flask(__name__)
 #
