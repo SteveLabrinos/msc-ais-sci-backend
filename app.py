@@ -1,3 +1,11 @@
+"""
+    File name: app.py
+    Author: Steve Labrinos, Konstantinos Raptis
+    Date created: 18/5/2021
+    Date last modified: 19/5/2021
+    Python Version: 3.8
+"""
+
 from flask import Flask
 from image_dataset import create_image_dataset
 from encode_faces import face_encoding

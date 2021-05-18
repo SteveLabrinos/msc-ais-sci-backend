@@ -1,3 +1,11 @@
+"""
+    File name: image_dataset.py
+    Author: Steve Labrinos, Konstantinos Raptis
+    Date created: 18/5/2021
+    Date last modified: 19/5/2021
+    Python Version: 3.8
+"""
+
 from requests import exceptions
 from api_keys import BING_IMAGE_API
 import requests

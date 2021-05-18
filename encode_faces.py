@@ -1,3 +1,11 @@
+"""
+    File name: encode_faces.py
+    Author: Steve Labrinos, Konstantinos Raptis
+    Date created: 19/5/2021
+    Date last modified: 19/5/2021
+    Python Version: 3.8
+"""
+
 # Using OpenCV and deep learning to encode
 # the images from the dataset using a trained
 # neural network and output 128-d embeddings
