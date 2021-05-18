@@ -20,7 +20,7 @@ import os
 def face_encoding(movie: str,
                   dataset_path="./dataset/actors",
                   encodings_path="encodings.picke",
-                  model="cnn"):
+                  model="hog"):
 
     print("[INFO] quantifying faces...")
     image_paths = list(paths.list_images(dataset_path))
@@ -44,6 +44,7 @@ def face_encoding(movie: str,
         # use hog or cnn models (hog is faster but less accurate)
         boxes = face_recognition.face_locations(rgb, model=model)
         # compute the facial embedding for the face
+        # creating a 128-d face embedding
         encodings = face_recognition.face_encodings(rgb, boxes)
         # loop over the encodings
         for encoding in encodings:
