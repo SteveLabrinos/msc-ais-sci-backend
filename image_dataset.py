@@ -12,8 +12,8 @@ import requests
 import cv2
 import os
 
-MAX_RESULTS = 5
-GROUP_SIZE = 5
+MAX_RESULTS = 20
+GROUP_SIZE = 10
 
 URL = "https://api.bing.microsoft.com/v7.0/images/search"
 
