@@ -9,3 +9,4 @@ face_recognition
 flask~=1.1.2
 requests~=2.25.1
 cv2
+google-api-python-client

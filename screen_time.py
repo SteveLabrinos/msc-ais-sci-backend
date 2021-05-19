@@ -18,7 +18,7 @@ def get_screen_time(movie: str) -> dict:
     actor_screen_time = dict()
     # get the faces and recognize the actors based on the trained model for all the frames
     for frame in frame_paths:
-        actors = recognize_faces(encodings, frame, model="cnn")
+        actors = recognize_faces(encodings, frame, model="hog")
         # calculate actors screen time based on the different frames recognized
         # because the program extracts one frame per second
         for actor in actors:

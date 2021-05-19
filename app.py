@@ -13,6 +13,7 @@ from encode_faces import face_encoding
 from image_recognition import recognize_faces
 from video_frames import produce_video_frames
 from screen_time import get_screen_time
+import video_search as vs
 
 # get the actors from the movie api
 movie_actors = [
@@ -31,6 +32,17 @@ for actor in movie_actors:
 movie = "jurassic_park"
 # if the movie is not in the DB calculate the image encodings
 # face_encoding("jurassic_park")
+
+# search for videos on YouTube based on the user input
+query_string = "jurassic park"
+response = vs.youtube_search(query_string)
+results = vs.deserialize_response(response)
+for k, v in results.items():
+    print(f"{k}: {v}")
+
+# download the videos from the movie
+
+
 # produce the frames for the video
 produce_video_frames("jurassic_park", "Jurassic_Park_Scene.mp4")
 
@@ -40,21 +52,6 @@ for k, v in actor_screen_time.items():
     print(f"Actor: {k}\t\tScreen Time: {v} sec")
 
 
-# # all the frames from the videos
-# frame_paths = list(paths.list_images("./dataset/movies/" + movie + "/frames"))
-# # the trained encoding dataset for the classification model
-# encodings = "./encodings/" + movie + "_encodings.picke"
-#
-# actor_screen_time = dict()
-# # get the faces and recognize the actors based on the trained model for all the frames
-# for frame in frame_paths:
-#     actors = recognize_faces(encodings, frame, model="hog")
-#     # calculate actors screen time based on the different frames recognized
-#     # because the program extracts one frame per second
-#     for actor in actors:
-#         actor_screen_time[actor] = actor_screen_time.get(actor, 0) + 1
-#
-# # print(actor_screen_time)
 # for k, v in actor_screen_time.items():
 #     print(f"Actor: {k}\t\tScreen Time: {v} sec")
 # app = Flask(__name__)

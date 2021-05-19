@@ -30,9 +30,10 @@ def produce_video_frames(movie: str, video):
         frame_rate = capture.get(cv2.CAP_PROP_FPS)
 
         while capture.isOpened():
-            # getting the current position
-            # frame_id = capture.get(cv2.CAP_PROP_POS_MSEC)
-            frame_id = capture.get(1)
+            # Relative position of the video file: 0 = start of the film
+            # 1 = end of the film
+            frame_id = capture.get(cv2.CAP_PROP_POS_AVI_RATIO)
+            # frame_id = capture.get(1)
             ret, frame = capture.read()
             if not ret:
                 break
