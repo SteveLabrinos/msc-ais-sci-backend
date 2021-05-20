@@ -17,19 +17,16 @@ from imutils import paths
 def process_video_list(movie: str):
     path = "./dataset/movies/" + movie + "/videos"
     videos_path = list(paths.list_files(path))
-    try:
-        os.makedirs("./dataset/movies/" + movie + "/frames")
-    except OSError as e:
-        print(f"[Error] Creating of the directory {movie} failed")
-        print(e)
 
-    for video_path in videos_path:
+    for i, video_path in enumerate(videos_path):
         video = video_path.split(os.path.sep)[-1]
-        produce_video_frames(movie, video)
+        produce_video_frames(movie, video, i)
 
 
-def produce_video_frames(movie: str, video):
-    frames_path = "./dataset/movies/" + movie + "/frames"
+def produce_video_frames(movie: str, video: str, counter: int):
+    # frames_path = "./dataset/movies/" + movie + "/frames"
+    frames_path = f"./dataset/movies/{movie}/frames/v_{counter}"
+    os.makedirs(frames_path)
     video_path = "./dataset/movies/" + movie + "/videos"
 
     cnt = 0

@@ -16,6 +16,9 @@ from screen_time import get_screen_time
 import video_search as vs
 from video_download import download_youtube_list
 
+# Downloading a sample of the list to reduce time results
+MAX_VIDEO_SEARCH = 3
+
 # get the actors from the movie api
 movie_actors = [
     "Alan Grant",
@@ -37,23 +40,22 @@ movie = "jurassic_park"
 
 # search for videos on YouTube based on the user input
 query_string = "jurassic park"
-response = vs.youtube_search(query_string)
+response = vs.youtube_search(query_string, MAX_VIDEO_SEARCH)
 youtube_videos = vs.deserialize_response(response)
+
+# download the videos from the movie
+# download_youtube_list(movie, youtube_videos['video_id'])
+
+# produce the frames for the video
+# vf.process_video_list("jurassic_park")
+
+# calculate actor screen time
+youtube_videos['screen_times'] = get_screen_time(
+    movie, len(youtube_videos['video_id']))
+
 # print the YouTube video list
 for k, v in youtube_videos.items():
     print(f"{k}: {v}")
-
-# download the videos from the movie
-download_youtube_list(movie, youtube_videos['video_id'])
-
-# produce the frames for the video
-vf.process_video_list("jurassic_park")
-# vf.produce_video_frames("jurassic_park", "Jurassic_Park_Scene.mp4")
-
-# calculate actor screen time
-actor_screen_time = get_screen_time(movie)
-for k, v in actor_screen_time.items():
-    print(f"Actor: {k}\t\tScreen Time: {v} sec")
 
 
 # app = Flask(__name__)
