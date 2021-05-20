@@ -1,0 +1,15 @@
+pandas~=1.2.3
+scipy
+numpy
+opencv-contrib-python
+imutils~=0.5.4
+dlib
+cmake
+face_recognition
+flask~=1.1.2
+requests~=2.25.1
+cv2
+google-api-python-client
+pytube
+youtube_dl
+isodate
