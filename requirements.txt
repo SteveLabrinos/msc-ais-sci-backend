@@ -12,3 +12,4 @@ cv2
 google-api-python-client
 pytube
 youtube_dl
+isodate

@@ -2,7 +2,7 @@
     File name: app.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 18/5/2021
-    Date last modified: 19/5/2021
+    Date last modified: 20/5/2021
     Python Version: 3.8
 """
 
@@ -11,7 +11,7 @@ from imutils import paths
 from image_dataset import create_image_dataset
 from encode_faces import face_encoding
 from image_recognition import recognize_faces
-from video_frames import produce_video_frames
+import video_frames as vf
 from screen_time import get_screen_time
 import video_search as vs
 from video_download import download_youtube_list
@@ -26,6 +26,7 @@ movie_actors = [
     "Owen Grady"
 ]
 
+
 # create the dataset based on the movie actors
 for actor in movie_actors:
     dataset_creation = create_image_dataset(actor)
@@ -38,6 +39,7 @@ movie = "jurassic_park"
 query_string = "jurassic park"
 response = vs.youtube_search(query_string)
 youtube_videos = vs.deserialize_response(response)
+# print the YouTube video list
 for k, v in youtube_videos.items():
     print(f"{k}: {v}")
 
@@ -45,7 +47,8 @@ for k, v in youtube_videos.items():
 download_youtube_list(movie, youtube_videos['video_id'])
 
 # produce the frames for the video
-produce_video_frames("jurassic_park", "Jurassic_Park_Scene.mp4")
+vf.process_video_list("jurassic_park")
+# vf.produce_video_frames("jurassic_park", "Jurassic_Park_Scene.mp4")
 
 # calculate actor screen time
 actor_screen_time = get_screen_time(movie)
@@ -53,10 +56,8 @@ for k, v in actor_screen_time.items():
     print(f"Actor: {k}\t\tScreen Time: {v} sec")
 
 
-# for k, v in actor_screen_time.items():
-#     print(f"Actor: {k}\t\tScreen Time: {v} sec")
 # app = Flask(__name__)
-#
+
 #
 # @app.route('/')
 # def hello_world():

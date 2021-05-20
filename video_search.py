@@ -8,6 +8,7 @@
 
 from api_keys import YOU_TUBE_API
 from googleapiclient.discovery import build
+import isodate
 
 # extract video list based on user search and save them
 # under the corresponding movie
@@ -41,17 +42,19 @@ def deserialize_response(response_data):
     dislike_count = []
     comment_count = []
     video_id = []
+    duration = []
 
     for search_result in response_data.get("items", []):
         video_id.append(search_result['id']['videoId'])
         title.append(search_result['snippet']['title'])
-        # then collect stats on each video using video_id
+        # collect stats on each video using video_id
         stats = youtube.videos().list(
-            part='statistics, snippet',
+            part='statistics, contentDetails',
             id=search_result['id']['videoId']).execute()
 
+        duration.append(isodate.parse_duration(stats['items'][0]['contentDetails']['duration']).seconds)
         view_count.append(stats['items'][0]['statistics']['viewCount'])
-        # Not every video has likes/dislikes enabled so they won't appear in JSON response
+        # Not every video has likes/dislikes enabled
         try:
             like_count.append(stats['items'][0]['statistics']['likeCount'])
         except FileNotFoundError:
@@ -69,9 +72,13 @@ def deserialize_response(response_data):
             comment_count.append("Not available")
 
     # Break out of for-loop and if statement and store lists of values in dictionary
-    youtube_dict = {'title': title, 'video_id': video_id,
-                    'view_count': view_count, 'like_count': like_count,
-                    'dislike_count': dislike_count, 'comment_count': comment_count}
+    youtube_dict = {'title': title,
+                    'video_id': video_id,
+                    'view_count': view_count,
+                    'like_count': like_count,
+                    'dislike_count': dislike_count,
+                    'comment_count': comment_count,
+                    'duration_sec': duration}
 
     return youtube_dict
 
