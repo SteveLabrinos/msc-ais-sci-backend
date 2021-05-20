@@ -36,7 +36,6 @@ def youtube_search(query, max_results=5, order="relevance"):
 def deserialize_response(response_data):
     # create variables to store your values
     title = []
-    category_id = []
     view_count = []
     like_count = []
     dislike_count = []
@@ -70,7 +69,7 @@ def deserialize_response(response_data):
             comment_count.append("Not available")
 
     # Break out of for-loop and if statement and store lists of values in dictionary
-    youtube_dict = {'category_title': category_id, 'title': title, 'video_id': video_id,
+    youtube_dict = {'title': title, 'video_id': video_id,
                     'view_count': view_count, 'like_count': like_count,
                     'dislike_count': dislike_count, 'comment_count': comment_count}
 

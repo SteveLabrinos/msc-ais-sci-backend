@@ -14,6 +14,7 @@ from image_recognition import recognize_faces
 from video_frames import produce_video_frames
 from screen_time import get_screen_time
 import video_search as vs
+from video_download import download_youtube_list
 
 # get the actors from the movie api
 movie_actors = [
@@ -36,12 +37,12 @@ movie = "jurassic_park"
 # search for videos on YouTube based on the user input
 query_string = "jurassic park"
 response = vs.youtube_search(query_string)
-results = vs.deserialize_response(response)
-for k, v in results.items():
+youtube_videos = vs.deserialize_response(response)
+for k, v in youtube_videos.items():
     print(f"{k}: {v}")
 
 # download the videos from the movie
-
+download_youtube_list(movie, youtube_videos['video_id'])
 
 # produce the frames for the video
 produce_video_frames("jurassic_park", "Jurassic_Park_Scene.mp4")

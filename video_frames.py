@@ -41,7 +41,7 @@ def produce_video_frames(movie: str, video):
             # with the less possible frames needed
             # opting for performance
             if frame_id % math.floor(frame_rate) == 0:
-                file_name = f"{video}_fr{str(cnt).zfill(4)}.jpg"
+                file_name = f"{str(video).lower().replace(' ', '_')}_fr{str(cnt).zfill(4)}.jpg"
                 cnt += 1
                 # cv2.imwrite(".dataset/movies/" + movie + "/frames/" + file_name, frame)
                 # frame_path = "./dataset/movies/" + movie + "/frames"

@@ -38,18 +38,18 @@ def create_image_dataset(actor):
         print("[INFO] searching Bing API for '{}'".format(actor))
         search = requests.get(URL, headers=headers, params=params)
         search.raise_for_status()
-        # grab the results from the search, including the total number of
-        # estimated results returned by the Bing API
+        # grab the youtube_videos from the search, including the total number of
+        # estimated youtube_videos returned by the Bing API
         results = search.json()
         est_num_results = min(results["totalEstimatedMatches"], MAX_RESULTS)
-        print("[INFO] {} total results for '{}'".format(est_num_results, actor))
+        print("[INFO] {} total youtube_videos for '{}'".format(est_num_results, actor))
         # initialize the total number of images downloaded thus far
         total = 0
 
-        # loop over the estimated number of results in `GROUP_SIZE` groups
+        # loop over the estimated number of youtube_videos in `GROUP_SIZE` groups
         for offset in range(0, est_num_results, GROUP_SIZE):
             # update the search parameters using the current offset, then
-            # make the request to fetch the results
+            # make the request to fetch the youtube_videos
             print("[INFO] making request for group {}-{} of {}...".format(
                 offset, offset + GROUP_SIZE, est_num_results))
             params["offset"] = offset
@@ -59,7 +59,7 @@ def create_image_dataset(actor):
             print("[INFO] saving images for group {}-{} of {}...".format(
                 offset, offset + GROUP_SIZE, est_num_results))
 
-            # loop over the results
+            # loop over the youtube_videos
             for v in results["value"]:
                 # try to download the image
                 try:
