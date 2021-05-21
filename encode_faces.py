@@ -2,7 +2,7 @@
     File name: encode_faces.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 19/5/2021
-    Date last modified: 19/5/2021
+    Date last modified: 21/5/2021
     Python Version: 3.8
 """
 
@@ -18,12 +18,12 @@ import os
 
 
 def face_encoding(movie: str,
-                  dataset_path="./dataset/actors",
+                  dataset_path="./dataset/actors}",
                   encodings_path="encodings.picke",
                   model="hog"):
 
     print("[INFO] quantifying faces...")
-    image_paths = list(paths.list_images(dataset_path))
+    image_paths = list(paths.list_images(f"{dataset_path}/{movie}"))
 
     known_encodings = []
     known_names = []
@@ -31,7 +31,7 @@ def face_encoding(movie: str,
     # loop over the image paths
     for (i, image_path) in enumerate(image_paths):
         # extract the person name from the image path
-        print("[INFO] processing image {}/{}".format(i + 1, len(image_paths)))
+        print(f"[INFO] processing image {i + 1}/{len(image_paths)}")
         name = image_path.split(os.path.sep)[-2]
         # load the input image and convert it from BGR (OpenCV ordering)
         # to dlib ordering (RGB)
@@ -46,6 +46,10 @@ def face_encoding(movie: str,
         # compute the facial embedding for the face
         # creating a 128-d face embedding
         encodings = face_recognition.face_encodings(rgb, boxes)
+        # images with more than 1 face are invalid for a persons encodings dataset
+        if len(encodings) > 1:
+            print(f"[INFO] faces found: {len(encodings)}. Skipping image encoding...")
+            continue
         # loop over the encodings
         for encoding in encodings:
             # add each encoding + name to the set of known names and encodings
@@ -55,6 +59,6 @@ def face_encoding(movie: str,
         # save encodings and names
         print("[INFO] serializing encodings...")
         data = {"encodings": known_encodings, "names": known_names}
-        f = open("./encodings/" + movie + "_" + encodings_path, "wb")
+        f = open(f"./encodings/{movie}_{encodings_path}", "wb")
         f.write(pickle.dumps(data))
         f.close()

@@ -2,7 +2,7 @@
     File name: image_dataset.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 18/5/2021
-    Date last modified: 19/5/2021
+    Date last modified: 21/5/2021
     Python Version: 3.8
 """
 
@@ -23,8 +23,8 @@ EXCEPTIONS = {IOError, FileNotFoundError, exceptions.RequestException,
               exceptions.Timeout}
 
 
-def create_image_dataset(actor):
-    dir_path = "./dataset/actors/" + str(actor).lower().replace(" ", "_")
+def create_image_dataset(actor: str, movie: str, num_of_results=MAX_RESULTS):
+    dir_path = f"./dataset/actors/{movie}/{str(actor).lower().replace(' ', '_')}"
     try:
         os.makedirs(dir_path)
     except OSError as e:
@@ -38,38 +38,35 @@ def create_image_dataset(actor):
         print("[INFO] searching Bing API for '{}'".format(actor))
         search = requests.get(URL, headers=headers, params=params)
         search.raise_for_status()
-        # grab the youtube_videos from the search, including the total number of
-        # estimated youtube_videos returned by the Bing API
+        # grab the images from the search, including the total number of
+        # estimated images returned by the Bing API
         results = search.json()
-        est_num_results = min(results["totalEstimatedMatches"], MAX_RESULTS)
-        print("[INFO] {} total youtube_videos for '{}'".format(est_num_results, actor))
+        est_num_results = min(results["totalEstimatedMatches"], num_of_results)
+        print(f"[INFO] {est_num_results} total youtube_videos for '{actor}'")
         # initialize the total number of images downloaded thus far
         total = 0
 
-        # loop over the estimated number of youtube_videos in `GROUP_SIZE` groups
+        # loop over the estimated number of images in `GROUP_SIZE` groups
         for offset in range(0, est_num_results, GROUP_SIZE):
             # update the search parameters using the current offset, then
-            # make the request to fetch the youtube_videos
-            print("[INFO] making request for group {}-{} of {}...".format(
-                offset, offset + GROUP_SIZE, est_num_results))
+            # make the request to fetch the images
+            print(f"[INFO] making request for group {offset}-{offset + GROUP_SIZE} of {est_num_results}...")
             params["offset"] = offset
             search = requests.get(URL, headers=headers, params=params)
             search.raise_for_status()
             results = search.json()
-            print("[INFO] saving images for group {}-{} of {}...".format(
-                offset, offset + GROUP_SIZE, est_num_results))
+            print(f"[INFO] saving images for group {offset}-{offset + GROUP_SIZE} of {est_num_results}...")
 
-            # loop over the youtube_videos
+            # loop over the images
             for v in results["value"]:
                 # try to download the image
                 try:
                     # make a request to download the image
-                    print("[INFO] fetching: {}".format(v["contentUrl"]))
+                    print(f"[INFO] fetching: {v['contentUrl']}")
                     r = requests.get(v["contentUrl"], timeout=30)
                     # build the path to the output image
                     ext = v["contentUrl"][v["contentUrl"].rfind("."):]
-                    p = os.path.sep.join([dir_path, "{}{}".format(
-                        str(total).zfill(8), ext)])
+                    p = os.path.sep.join([dir_path, f"{str(total).zfill(8)}{ext}"])
                     # write the image to disk
                     f = open(p, "wb")
                     f.write(r.content)
@@ -79,7 +76,7 @@ def create_image_dataset(actor):
                     # if the image is `None` then we could not properly load the
                     # image from disk (so it should be ignored)
                     if image is None:
-                        print("[INFO] deleting: {}".format(p))
+                        print(f"[INFO] deleting: {p}")
                         os.remove(p)
                         continue
                     # update the counter
@@ -88,5 +85,5 @@ def create_image_dataset(actor):
                 except Exception as e:
                     # check to see if our exception is in the list of exceptions
                     if type(e) in EXCEPTIONS:
-                        print("[INFO] skipping: {}".format(v["contentUrl"]))
+                        print(f"[INFO] skipping: {v['contentUrl']}")
                         continue
