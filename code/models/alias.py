@@ -12,7 +12,7 @@ from code.models.movie import MovieModel
 
 class MovieAliasModel(db.Model):
     __tablename__ = 'movie_alias'
-    __table_args__ = {'schema': 'face_recognition'}
+    # __table_args__ = {'schema': 'face_recognition'}
 
     id = db.Column(db.Integer, primary_key=True)
     alias = db.Column(db.String(255), nullable=False)

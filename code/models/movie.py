@@ -7,11 +7,18 @@
 """
 
 from code.db import db
+from code.models.actor import ActorModel
+
+movie_actors = db.Table('movie_actors',
+                        db.Column('movie_id', db.String(20), db.ForeignKey('movie.id'), primary_key=True),
+                        db.Column('actor_id', db.String(20), db.ForeignKey('actor.id'), primary_key=True),
+                        db.Column('role_name', db.String(50))
+                        )
 
 
 class MovieModel(db.Model):
     __tablename__ = 'movie'
-    __table_args__ = {'schema': 'face_recognition'}
+    # __table_args__ = {'schema': 'face_recognition'}
 
     id = db.Column(db.String(20), primary_key=True)
     title = db.Column(db.String(255), nullable=False)
@@ -21,6 +28,7 @@ class MovieModel(db.Model):
 
     # foreign key relationship with alias 1:M table
     alias = db.relationship('MovieAliasModel', lazy='dynamic')
+    actors = db.relationship('ActorModel', secondary=movie_actors, lazy='dynamic')
 
     def __init__(self, id, title, type, image_url, year):
         self.id = id
@@ -35,7 +43,8 @@ class MovieModel(db.Model):
             'title': self.title,
             'type': self.type,
             'imageUrl': self.image_url,
-            'year': self.year
+            'year': self.year,
+            'actors': [a.json() for a in self.actors.all()]
         }
 
     def save_to_db(self):
@@ -49,3 +58,7 @@ class MovieModel(db.Model):
     @classmethod
     def find_by_id(cls, id):
         return cls.query.filter_by(id=id).first()
+
+
+
+

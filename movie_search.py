@@ -81,9 +81,9 @@ def get_cast(movie_id: str):
         image = cast[actor_id]["name"]["image"]["url"] if "image" in cast[actor_id] else "Not available"
         role = cast[actor_id]["charname"][0]["characters"][0] if "characters" in cast[actor_id] else "Not available"
         char_list.append({
-            "actor_id": actor_id,
-            "actor_name": name,
-            "actor_image": image,
+            "id": actor_id,
+            "name": name,
+            "image": image,
             "role_name": role
         })
 

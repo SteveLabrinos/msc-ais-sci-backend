@@ -11,15 +11,21 @@ from flask_restful import Api
 from code.db import db
 from code.resources.movie import Movie, MovieList
 from code.resources.alias import MovieAlias
-from api_keys import DB_CONNECTION
+# from api_keys import DB_CONNECTION
 from flask_migrate import Migrate
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = DB_CONNECTION
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///csi.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 api = Api(app)
 db.init_app(app)
 migrate = Migrate(app, db)
+
+
+# create db tables if they don't exist before the first call
+@app.before_first_request
+def create_table():
+    db.create_all()
 
 
 api.add_resource(MovieList, '/api/movie')
