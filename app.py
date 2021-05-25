@@ -7,7 +7,7 @@
 """
 
 from code.deep_learning.image_dataset import create_image_dataset
-from encode_faces import face_encoding
+from code.deep_learning.encode_faces import face_encoding
 import video_frames as vf
 from screen_time import get_screen_time
 from code.deep_learning import video_search as vs

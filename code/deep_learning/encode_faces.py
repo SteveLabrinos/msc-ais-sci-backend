@@ -2,7 +2,7 @@
     File name: encode_faces.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 19/5/2021
-    Date last modified: 21/5/2021
+    Date last modified: 25/5/2021
     Python Version: 3.8
 """
 
@@ -17,13 +17,9 @@ import cv2
 import os
 
 
-def face_encoding(movie: str,
-                  dataset_path="./dataset/actors}",
-                  encodings_path="encodings.picke",
-                  model="hog"):
-
+def face_encoding(movie: str, model="hog"):
     print("[INFO] quantifying faces...")
-    image_paths = list(paths.list_images(f"{dataset_path}/{movie}"))
+    image_paths = list(paths.list_images(f"./dataset/actors/{movie}"))
 
     known_encodings = []
     known_names = []
@@ -59,6 +55,6 @@ def face_encoding(movie: str,
         # save encodings and names
         print("[INFO] serializing encodings...")
         data = {"encodings": known_encodings, "names": known_names}
-        f = open(f"./encodings/{movie}_{encodings_path}", "wb")
+        f = open(f"./encodings/{movie}.pickle", "wb")
         f.write(pickle.dumps(data))
         f.close()

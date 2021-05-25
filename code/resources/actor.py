@@ -8,6 +8,7 @@
 
 from flask_restful import Resource
 from code.deep_learning.image_dataset import create_image_dataset
+from code.deep_learning.encode_faces import face_encoding
 from code.models.actor import ActorModel
 from code.models.movie import MovieModel
 
@@ -36,3 +37,23 @@ class ActorDataset(Resource):
             ActorModel.update_dataset_by_id(actor_id=actor.id, size=size)
 
         return {'message': f'downloaded {size} images for the {len(no_dataset_actors)} actors'}
+
+
+class ActorEncoding(Resource):
+    def get(self, movie_id, learning_model):
+        # check if the movie already has encoded its actors
+        movie = MovieModel.find_by_id(movie_id)
+        if movie.encodings:
+            return {'message': 'Actor encodings is complete'}
+        # create the pickle file with the encodings
+        # for all the actors of the given movie
+        try:
+            face_encoding(movie_id, learning_model)
+        except Exception as e:
+            return {'message': f'Error occurred when trying to encode actors dataset - {e}'}
+
+        # update that the movie has encodings
+        movie.encodings = 'completed'
+        movie.save_to_db()
+        return {'message': f'Encoding of all actors completed'}
+

@@ -25,6 +25,7 @@ class MovieModel(db.Model):
     type = db.Column(db.String(50))
     image_url = db.Column(db.String(255))
     year = db.Column(db.Integer)
+    encodings = db.Column(db.String(20))
 
     # foreign key relationships
     alias = db.relationship('MovieAliasModel', lazy='dynamic')
@@ -45,6 +46,7 @@ class MovieModel(db.Model):
             'type': self.type,
             'imageUrl': self.image_url,
             'year': self.year,
+            'encodings': self.encodings,
             'actors': [self.get_role_name(a).json() for a in self.actors]
         }
 
@@ -60,7 +62,6 @@ class MovieModel(db.Model):
         db.session.add(self)
         db.session.commit()
         for a in self.actors:
-            print(f'saving actor: {a.json()}')
             db.session.execute(
                 "UPDATE movie_actors SET role_name = :role_name WHERE movie_id=:movie_id AND actor_id=:actor_id",
                 {"role_name": a.role_name, "movie_id": self.id, "actor_id": a.id}
