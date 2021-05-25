@@ -8,9 +8,8 @@
 
 from code.deep_learning.image_dataset import create_image_dataset
 from code.deep_learning.encode_faces import face_encoding
-import video_frames as vf
 from screen_time import get_screen_time
-from code.deep_learning import video_search as vs
+from code.deep_learning import video_search as vs, video_frames as vf
 from code.deep_learning.video_download import download_youtube_list
 from code.deep_learning.movie_search import get_movie
 
@@ -45,6 +44,7 @@ response = vs.youtube_search(you_tube_search, MAX_VIDEO_SEARCH)
 youtube_videos = vs.deserialize_response(response)
 
 # 5. download the videos from the movie
+# OK
 download_youtube_list(movie_name, youtube_videos['video_id'])
 
 # 6. produce the frames for the video

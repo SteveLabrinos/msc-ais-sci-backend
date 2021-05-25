@@ -15,7 +15,7 @@ from imutils import paths
 
 
 def process_video_list(movie: str):
-    path = "./dataset/movies/" + movie + "/videos"
+    path = f"./dataset/movies/{movie}/videos"
     videos_path = list(paths.list_files(path))
 
     for i, video_path in enumerate(videos_path):
@@ -24,7 +24,6 @@ def process_video_list(movie: str):
 
 
 def produce_video_frames(movie: str, video: str, counter: int):
-    # frames_path = "./dataset/movies/" + movie + "/frames"
     frames_path = f"./dataset/movies/{movie}/frames/v_{counter}"
     os.makedirs(frames_path)
     video_path = "./dataset/movies/" + movie + "/videos"
