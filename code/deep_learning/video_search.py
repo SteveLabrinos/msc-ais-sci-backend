@@ -1,5 +1,5 @@
 """
-    File name: app.py
+    File name: execution_in_sequence.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 19/5/2021
     Date last modified: 25/5/2021

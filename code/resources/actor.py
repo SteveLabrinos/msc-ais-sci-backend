@@ -1,5 +1,5 @@
 """
-    File name: app.py
+    File name: execution_in_sequence.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 24/5/2021
     Date last modified: 24/5/2021
@@ -33,7 +33,7 @@ class ActorDataset(Resource):
 
         # download images for each actor with empty dataset
         for actor in no_dataset_actors:
-            create_image_dataset(actor.id, movie_id, size)
+            create_image_dataset(actor, movie, size)
             # save the the size of the dataset for the actor
             ActorModel.update_dataset_by_id(actor_id=actor.id, size=size)
 

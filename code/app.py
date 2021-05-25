@@ -1,8 +1,8 @@
 """
-    File name: app.py
+    File name: execution_in_sequence.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 18/5/2021
-    Date last modified: 25/5/2021
+    Date last modified: 26/5/2021
     Python Version: 3.8
 """
 
@@ -15,8 +15,6 @@ from code.resources.video import Video, VideoDownload, VideoFrames
 from code.resources.actor import ActorDataset, ActorEncoding, ActorScreenTime
 from flask_migrate import Migrate
 
-# Downloading a sample of the list to reduce time results
-MAX_VIDEO_SEARCH = 2
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///csi.db'

@@ -23,8 +23,8 @@ EXCEPTIONS = {IOError, FileNotFoundError, exceptions.RequestException,
               exceptions.Timeout}
 
 
-def create_image_dataset(actor: str, movie: str, num_of_results=MAX_RESULTS):
-    dir_path = f"./dataset/actors/{movie}/{str(actor).lower().replace(' ', '_')}"
+def create_image_dataset(actor, movie, num_of_results=MAX_RESULTS):
+    dir_path = f"./dataset/actors/{movie.id}/{actor.id}"
     try:
         os.makedirs(dir_path)
     except OSError as e:
@@ -34,16 +34,17 @@ def create_image_dataset(actor: str, movie: str, num_of_results=MAX_RESULTS):
         group_size = min(GROUP_SIZE, num_of_results)
         # set the headers and search parameters
         headers = {"Ocp-Apim-Subscription-Key": BING_IMAGE_API}
-        params = {"q": actor, "offset": 0, "count": group_size}
+        query = f"{actor.name} - {movie.title}"
+        params = {"q": query, "offset": 0, "count": group_size}
         # make the search
-        print("[INFO] searching Bing API for '{}'".format(actor))
+        print("[INFO] searching Bing API for '{}'".format(query))
         search = requests.get(URL, headers=headers, params=params)
         search.raise_for_status()
         # grab the images from the search, including the total number of
         # estimated images returned by the Bing API
         results = search.json()
         est_num_results = min(results["totalEstimatedMatches"], num_of_results)
-        print(f"[INFO] {est_num_results} total youtube_videos for '{actor}'")
+        print(f"[INFO] {est_num_results} total images for '{query}'")
         # initialize the total number of images downloaded thus far
         total = 0
 

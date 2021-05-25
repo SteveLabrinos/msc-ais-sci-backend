@@ -1,5 +1,5 @@
 """
-    File name: app.py
+    File name: execution_in_sequence.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 18/5/2021
     Date last modified: 21/5/2021
@@ -15,7 +15,6 @@ from code.deep_learning.movie_search import get_movie
 
 # Downloading a sample of the list to reduce time results
 MAX_VIDEO_SEARCH = 3
-
 
 query = "inception"
 model = "hog"
@@ -66,16 +65,3 @@ for k, v in movie.items():
 for k, v in youtube_videos.items():
     print(f"{k}: {v}")
 
-
-# app = Flask(__name__)
-
-#
-# @app.route('/')
-# def hello_world():
-#     create_image_dataset("Keanu Reeves")
-#     return 'Hello World!'
-#
-#
-# if __name__ == '__main__':
-#     create_image_dataset("Keanu Reeves")
-#     app.run()
