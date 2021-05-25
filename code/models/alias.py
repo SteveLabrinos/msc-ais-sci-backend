@@ -2,7 +2,7 @@
     File name: app.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 24/5/2021
-    Date last modified: 24/5/2021
+    Date last modified: 25/5/2021
     Python Version: 3.8
 """
 
@@ -21,7 +21,7 @@ class MovieAliasModel(db.Model):
     movie_id = db.Column(db.String(20), db.ForeignKey(MovieModel.id))
 
     def __init__(self, alias, movie_id):
-        self.alias = alias
+        self.alias = alias.lower().strip().replace(' ', '_')
         self.movie_id = movie_id
 
     def json(self):

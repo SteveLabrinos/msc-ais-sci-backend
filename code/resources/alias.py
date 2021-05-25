@@ -7,9 +7,10 @@
 """
 
 from flask_restful import Resource
-from movie_search import get_movie
+from movie_search import get_movie, get_cast
 from code.models.alias import MovieAliasModel
 from code.models.movie import MovieModel
+from code.models.actor import ActorModel
 
 
 class MovieAlias(Resource):
@@ -28,9 +29,20 @@ class MovieAlias(Resource):
         movie = MovieModel(**movie_api)
         movie_alias = MovieAliasModel(alias, movie.id)
 
-        # save to models to the DB
-        if MovieModel.find_by_id(movie.id) is None:
-            movie.save_to_db()
+        # search if the movie exists in the database
+        stored_movie = MovieModel.find_by_id(movie.id)
+        if stored_movie:
+            movie_alias.save_to_db()
+            return stored_movie.json()
+
+        # get the actors for the given movie
+        top_cast = get_cast(movie.id)
+        for cast in top_cast:
+            actor = ActorModel(**cast)
+            movie.actors.append(actor)
+
+        # save results of movie, actors and alias to the DB
+        movie.save_to_db()
         movie_alias.save_to_db()
         # return the movie from the API call
         return movie.json()

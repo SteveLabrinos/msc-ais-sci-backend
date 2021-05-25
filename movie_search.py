@@ -61,8 +61,9 @@ def get_movie(query_string: str) -> dict:
 
 # search for the 4 top cast of the movie based on the movie ID
 def get_cast(movie_id: str):
+    print('called')
     cast_url = BASE_URL + "/get-top-cast"
-    top_cast_id = imdb_request({"tconst": movie_id}, cast_url)[0:3]
+    top_cast_id = imdb_request({"tconst": movie_id}, cast_url)[0:1]
 
     # search for cast information based on the name ID and the movie ID
     char_list = list()
@@ -78,8 +79,8 @@ def get_cast(movie_id: str):
         }, char_url)
         # set the actors details and role details
         name = cast[actor_id]["name"]["name"] if "name" in cast[actor_id] else "Not available"
-        image = cast[actor_id]["name"]["image"]["url"] if "image" in cast[actor_id] else "Not available"
-        role = cast[actor_id]["charname"][0]["characters"][0] if "characters" in cast[actor_id] else "Not available"
+        image = cast[actor_id]["name"]["image"]["url"] if "image" in cast[actor_id]["name"] else "Not available"
+        role = cast[actor_id]["charname"][0]["characters"][0] if "charname" in cast[actor_id] else "Not available"
         char_list.append({
             "id": actor_id,
             "name": name,

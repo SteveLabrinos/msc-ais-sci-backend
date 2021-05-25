@@ -2,7 +2,7 @@
     File name: app.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 24/5/2021
-    Date last modified: 24/5/2021
+    Date last modified: 25/5/2021
     Python Version: 3.8
 """
 
@@ -17,16 +17,18 @@ class ActorModel(db.Model):
     name = db.Column(db.String(50))
     image = db.Column(db.String(255))
 
-    def __init__(self, id, name, image):
+    def __init__(self, id, name, image, role_name):
         self.id = id
         self.name = name
         self.image = image
+        self.role_name = role_name
 
     def json(self):
         return {
             'id': self.id,
             'name': self.name,
             'imageUrl': self.image,
+            'roleName': self.role_name
         }
 
     def save_to_db(self):

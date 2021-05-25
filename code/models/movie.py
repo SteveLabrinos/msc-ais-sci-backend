@@ -2,7 +2,7 @@
     File name: app.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 24/5/2021
-    Date last modified: 24/5/2021
+    Date last modified: 25/5/2021
     Python Version: 3.8
 """
 
@@ -28,7 +28,7 @@ class MovieModel(db.Model):
 
     # foreign key relationship with alias 1:M table
     alias = db.relationship('MovieAliasModel', lazy='dynamic')
-    actors = db.relationship('ActorModel', secondary=movie_actors, lazy='dynamic')
+    actors = db.relationship('ActorModel', secondary=movie_actors)
 
     def __init__(self, id, title, type, image_url, year):
         self.id = id
@@ -44,12 +44,26 @@ class MovieModel(db.Model):
             'type': self.type,
             'imageUrl': self.image_url,
             'year': self.year,
-            'actors': [a.json() for a in self.actors.all()]
+            'actors': [self.get_role_name(a).json() for a in self.actors]
         }
+
+    def get_role_name(self, actor):
+        actor.role_name = db.session.execute(
+            "SELECT role_name FROM movie_actors WHERE movie_id=:movie_id AND actor_id=:actor_id",
+            {'movie_id': self.id, 'actor_id': actor.id}
+        ).first()[0]
+
+        return actor
 
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
+        for actor in self.actors:
+            db.session.execute(
+                "UPDATE movie_actors SET role_name = :role_name WHERE movie_id=:movie_id AND actor_id=:actor_id",
+                {"role_name": actor.role_name, "movie_id": self.id, "actor_id": actor.id}
+            )
+            db.session.commit()
 
     @classmethod
     def find_by_title(cls, title):
@@ -58,7 +72,3 @@ class MovieModel(db.Model):
     @classmethod
     def find_by_id(cls, id):
         return cls.query.filter_by(id=id).first()
-
-
-
-

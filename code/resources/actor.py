@@ -17,3 +17,4 @@ class Actor(Resource):
             return actor.json()
         return {'message': f'Actor with id {actor_id} not found'}, 404
 
+
