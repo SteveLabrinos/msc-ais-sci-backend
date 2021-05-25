@@ -11,7 +11,7 @@ from code.deep_learning.encode_faces import face_encoding
 import video_frames as vf
 from screen_time import get_screen_time
 from code.deep_learning import video_search as vs
-from video_download import download_youtube_list
+from code.deep_learning.video_download import download_youtube_list
 from code.deep_learning.movie_search import get_movie
 
 # Downloading a sample of the list to reduce time results
@@ -21,20 +21,25 @@ MAX_VIDEO_SEARCH = 3
 query = "inception"
 model = "hog"
 # 1. depending on the query from the user get the relevant movie and cast
+# OK
 movie = get_movie(query)
 
 # actors name and movie role for the image dataset
+# OK
 movie_actors = [(lambda c: f"{c['actor_name']} - {c['role_name']}")(c) for c in movie["cast"]]
 
 movie_name = movie["movie_title"].lower().replace(" ", "_")
 # 2. create the dataset based on the movie actors
+# OK
 for actor in movie_actors:
     dataset_creation = create_image_dataset(actor, movie_name)
 
 # 3. if the movie is not in the DB calculate the image encodings
+# OK
 face_encoding(movie_name, model="hog")
 
 # 4. search for videos on YouTube based on the user input
+# OK
 you_tube_search = f"{movie['movie_title']} & {movie['year']}"
 response = vs.youtube_search(you_tube_search, MAX_VIDEO_SEARCH)
 youtube_videos = vs.deserialize_response(response)

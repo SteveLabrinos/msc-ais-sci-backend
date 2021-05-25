@@ -11,7 +11,7 @@ from flask_restful import Api
 from code.db import db
 from code.resources.movie import Movie, MovieList
 from code.resources.alias import MovieAlias
-from code.resources.video import Video
+from code.resources.video import Video, VideoDownload
 from code.resources.actor import ActorDataset, ActorEncoding
 from flask_migrate import Migrate
 
@@ -38,6 +38,7 @@ api.add_resource(MovieAlias, '/api/movie/alias/<string:alias>')
 api.add_resource(Video, '/api/video/<string:movie_id>')
 api.add_resource(ActorDataset, '/api/dataset/<string:movie_id>/size/<int:size>')
 api.add_resource(ActorEncoding, '/api/dataset/encoding/<string:movie_id>/model/<string:learning_model>')
+api.add_resource(VideoDownload, '/api/video/download/<string:movie_id>')
 
 
 if __name__ == "__main__":

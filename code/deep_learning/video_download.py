@@ -16,7 +16,7 @@ BASE_URL = "https://www.youtube.com/watch?v="
 
 
 def download_youtube_list(movie: str, video_ids: list):
-    video_path = "./dataset/movies/" + movie + "/videos"
+    video_path = f"./dataset/movies/{movie}/videos"
     ydl_opts = {
         'outtmpl': video_path + '/%(title)s.%(ext)s',
     }
