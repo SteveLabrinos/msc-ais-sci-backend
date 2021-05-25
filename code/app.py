@@ -12,7 +12,7 @@ from code.db import db
 from code.resources.movie import Movie, MovieList
 from code.resources.alias import MovieAlias
 from code.resources.video import Video, VideoDownload, VideoFrames
-from code.resources.actor import ActorDataset, ActorEncoding
+from code.resources.actor import ActorDataset, ActorEncoding, ActorScreenTime
 from flask_migrate import Migrate
 
 # Downloading a sample of the list to reduce time results
@@ -35,11 +35,12 @@ def create_table():
 api.add_resource(MovieList, '/api/movie')
 api.add_resource(Movie, '/api/movie/<string:movie_id>')
 api.add_resource(MovieAlias, '/api/movie/alias/<string:alias>')
-api.add_resource(Video, '/api/video/<string:movie_id>')
+api.add_resource(Video, '/api/video/<string:movie_id>/total/<int:total_videos>')
 api.add_resource(ActorDataset, '/api/dataset/<string:movie_id>/size/<int:size>')
 api.add_resource(ActorEncoding, '/api/dataset/encoding/<string:movie_id>/model/<string:learning_model>')
 api.add_resource(VideoDownload, '/api/video/download/<string:movie_id>')
 api.add_resource(VideoFrames, '/api/video/frames/<string:movie_id>')
+api.add_resource(ActorScreenTime, '/api/actor/screen-times/<string:movie_id>/model/<string:learning_model>')
 
 
 if __name__ == "__main__":

@@ -12,11 +12,10 @@ from code.models.movie import MovieModel
 from code.deep_learning.video_search import youtube_search, deserialize_response
 from code.deep_learning.video_download import download_youtube_list
 from code.deep_learning.video_frames import process_video_list
-from globals import MAX_VIDEO_SEARCH
 
 
 class Video(Resource):
-    def get(self, movie_id):
+    def get(self, movie_id, total_videos):
         # check if the videos exist in the database
         videos = VideoModel.find_by_movie(movie_id)
         if videos:
@@ -25,7 +24,7 @@ class Video(Resource):
         # download the videos with the YouTube API
         movie = MovieModel.find_by_id(movie_id)
         query_string = f'{movie.title} & {movie.year}'
-        response = youtube_search(query=query_string, max_results=MAX_VIDEO_SEARCH)
+        response = youtube_search(query=query_string, max_results=total_videos)
         youtube_videos = deserialize_response(response)
 
         for video in youtube_videos:

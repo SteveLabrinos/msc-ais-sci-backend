@@ -9,6 +9,7 @@
 from flask_restful import Resource
 from code.deep_learning.image_dataset import create_image_dataset
 from code.deep_learning.encode_faces import face_encoding
+from code.deep_learning.screen_time import get_screen_time
 from code.models.actor import ActorModel
 from code.models.movie import MovieModel
 
@@ -50,10 +51,28 @@ class ActorEncoding(Resource):
         try:
             face_encoding(movie_id, learning_model)
         except Exception as e:
-            return {'message': f'Error occurred when trying to encode actors dataset - {e}'}
+            return {'message': f'Error occurred when trying to encode actors dataset - {e}'}, 500
 
         # update that the movie has encodings
         movie.encodings = 'completed'
         movie.save_to_db()
         return {'message': f'Encoding of all actors completed'}
+
+
+class ActorScreenTime(Resource):
+    def get(self, movie_id, learning_model):
+        movie = MovieModel.find_by_id(movie_id)
+        count = movie.videos.count()
+        # for i in movie.videos:
+        #     cnt += 1
+        # check if the screen times are calculated
+        videos_screen_times = get_screen_time(
+            movie_id, count, learning_model
+        )
+        # test
+        for v in videos_screen_times:
+            print(v)
+
+        return {'message': 'video screen times calculated'}
+
 

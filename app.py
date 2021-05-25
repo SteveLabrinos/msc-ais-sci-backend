@@ -8,7 +8,7 @@
 
 from code.deep_learning.image_dataset import create_image_dataset
 from code.deep_learning.encode_faces import face_encoding
-from screen_time import get_screen_time
+from code.deep_learning.screen_time import get_screen_time
 from code.deep_learning import video_search as vs, video_frames as vf
 from code.deep_learning.video_download import download_youtube_list
 from code.deep_learning.movie_search import get_movie
@@ -48,6 +48,7 @@ youtube_videos = vs.deserialize_response(response)
 download_youtube_list(movie_name, youtube_videos['video_id'])
 
 # 6. produce the frames for the video
+# OK
 vf.process_video_list(movie_name)
 
 # 7. calculate actor screen time

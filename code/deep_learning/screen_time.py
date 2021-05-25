@@ -6,7 +6,7 @@
     Python Version: 3.8
 """
 from imutils import paths
-from image_recognition import recognize_faces
+from code.deep_learning.image_recognition import recognize_faces
 
 
 def video_screen_time(movie: str, video_folder: str, knowledge, model="hog") -> dict:
@@ -29,7 +29,7 @@ def video_screen_time(movie: str, video_folder: str, knowledge, model="hog") -> 
 
 def get_screen_time(movie: str, total_videos: int, model="hog") -> list:
     # the trained encoding dataset for the classification model
-    encodings = f"./encodings/{movie}_encodings.picke"
+    encodings = f"./encodings/{movie}.pickle"
 
     return [video_screen_time(movie, f"v_{v}", encodings, model=model) for v in range(total_videos)]
 
