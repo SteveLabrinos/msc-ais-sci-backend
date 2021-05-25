@@ -23,21 +23,20 @@ def process_video_list(movie: str):
         produce_video_frames(movie, video, i)
 
 
-def produce_video_frames(movie: str, video: str, counter: int):
-    frames_path = f"./dataset/movies/{movie}/frames/v_{counter}"
+def produce_video_frames(movie: str, video: str, counter=0):
+    frames_path = f"./dataset/movies/{movie}/frames/{video}"
     os.makedirs(frames_path)
-    video_path = "./dataset/movies/" + movie + "/videos"
+    video_path = f"./dataset/movies/{movie}/videos/{video}.mp4"
 
     cnt = 0
     # capturing the video from the given path
-    capture = cv2.VideoCapture(os.path.join(video_path, video))
+    capture = cv2.VideoCapture(video_path)
     # get the frame rate of the input video
     frame_rate = capture.get(cv2.CAP_PROP_FPS)
 
     while capture.isOpened():
         # Relative position of the video file: 0 = start of the film
         # 1 = end of the film
-        # frame_id = capture.get(cv2.CAP_PROP_POS_AVI_RATIO)
         frame_id = capture.get(1)
         ret, frame = capture.read()
         if not ret:

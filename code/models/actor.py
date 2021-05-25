@@ -1,7 +1,7 @@
 """
     File name: app.py
     Author: Steve Labrinos, Konstantinos Raptis
-    Date created: 24/5/2021
+    Date created: 25/5/2021
     Date last modified: 25/5/2021
     Python Version: 3.8
 """
@@ -18,6 +18,7 @@ class ActorModel(db.Model):
     image = db.Column(db.String(255))
     role_name = db.Column(db.String(50))
     dataset = db.Column(db.String(10))
+    duration = db.Column(db.Integer)
 
     def __init__(self, id, name, image, role_name):
         self.id = id
@@ -32,6 +33,7 @@ class ActorModel(db.Model):
             'imageUrl': self.image,
             'roleName': self.role_name,
             'dataset': self.dataset,
+            'duration': self.duration
         }
 
     def save_to_db(self):

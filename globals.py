@@ -1,1 +1,0 @@
-MAX_VIDEO_SEARCH = 2

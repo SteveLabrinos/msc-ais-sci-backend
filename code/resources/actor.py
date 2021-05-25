@@ -9,7 +9,7 @@
 from flask_restful import Resource
 from code.deep_learning.image_dataset import create_image_dataset
 from code.deep_learning.encode_faces import face_encoding
-from code.deep_learning.screen_time import get_screen_time
+from code.deep_learning.screen_time import get_screen_time, video_screen_time
 from code.models.actor import ActorModel
 from code.models.movie import MovieModel
 
@@ -62,17 +62,16 @@ class ActorEncoding(Resource):
 class ActorScreenTime(Resource):
     def get(self, movie_id, learning_model):
         movie = MovieModel.find_by_id(movie_id)
-        count = movie.videos.count()
-        # for i in movie.videos:
-        #     cnt += 1
-        # check if the screen times are calculated
-        videos_screen_times = get_screen_time(
-            movie_id, count, learning_model
-        )
-        # test
-        for v in videos_screen_times:
-            print(v)
 
-        return {'message': 'video screen times calculated'}
+        for video in movie.videos:
+            video_actors = video_screen_time(movie_id, video.id, learning_model)
+            for a in video_actors:
+                actor = ActorModel.find_by_id(a['id'])
+                actor.duration = a['duration']
+                video.actors.append(actor)
+                video.save_to_db()
+
+        return {'videos': [v.json() for v in movie.videos.all()]}
+
 
 

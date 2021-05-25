@@ -7,6 +7,14 @@
 """
 
 from code.db import db
+from code.models.actor import ActorModel
+
+
+video_actors = db.Table('video_actors',
+                        db.Column('video_id', db.String(20), db.ForeignKey('video.id'), primary_key=True),
+                        db.Column('actor_id', db.String(20), db.ForeignKey('actor.id'), primary_key=True),
+                        db.Column('duration', db.Integer)
+                        )
 
 
 class VideoModel(db.Model):
@@ -21,6 +29,7 @@ class VideoModel(db.Model):
     duration_sec = db.Column(db.Integer)
 
     movie_id = db.Column(db.String(20), db.ForeignKey('movie.id'))
+    actors = db.relationship('ActorModel', secondary=video_actors)
 
     def __init__(self, id, title, view_count, like_count, dislike_count, comment_count, duration_sec):
         self.id = id
@@ -40,8 +49,17 @@ class VideoModel(db.Model):
             'dislikeCount': self.dislike_count,
             'commentCount': self.comment_count,
             'durationSeconds': self.duration_sec,
-            'movieId': self.movie_id
+            'movieId': self.movie_id,
+            'actors': [self.get_duration(a).json() for a in self.actors]
         }
+
+    def get_duration(self, actor):
+        actor.duration = db.session.execute(
+            "SELECT duration FROM video_actors WHERE video_id=:video_id AND actor_id=:actor_id",
+            {'video_id': self.id, 'actor_id': actor.id}
+        ).first()[0]
+
+        return actor
 
     @classmethod
     def find_by_id(cls, video_id):
@@ -54,4 +72,15 @@ class VideoModel(db.Model):
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
+
+        for a in self.actors:
+            db.session.execute(
+                "UPDATE video_actors SET duration = :duration WHERE video_id = :video_id AND actor_id = :actor_id",
+                {"duration": a.duration, "video_id": self.id, "actor_id": a.id}
+                # "INSERT INTO video_actors VALUES (:video_id, :actor_id, :duration)",
+                # {"video_id": self.id, "actor_id": a.id, "duration": a.duration}
+            )
+            db.session.commit()
+
+
 

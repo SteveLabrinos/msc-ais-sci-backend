@@ -11,7 +11,7 @@ from code.models.video import VideoModel
 from code.models.movie import MovieModel
 from code.deep_learning.video_search import youtube_search, deserialize_response
 from code.deep_learning.video_download import download_youtube_list
-from code.deep_learning.video_frames import process_video_list
+from code.deep_learning.video_frames import produce_video_frames
 
 
 class Video(Resource):
@@ -48,10 +48,13 @@ class VideoDownload(Resource):
 class VideoFrames(Resource):
     def get(self, movie_id):
         # get the frames for the movies downloaded videos
-        try:
-            process_video_list(movie_id)
-        except Exception as e:
-            return {'message': 'Error occurred while producing video frames for the movie'}, 500
+        movie = MovieModel.find_by_id(movie_id)
+        for video in movie.videos:
+            try:
+                produce_video_frames(movie_id, video.id)
+            except Exception as e:
+                return {'message': f'Error occurred while producing video frames - {e}'}, 500
+
         return {'message': 'Video frames produced'}
 
 
