@@ -16,6 +16,8 @@ class ActorModel(db.Model):
     id = db.Column(db.String(20), primary_key=True)
     name = db.Column(db.String(50))
     image = db.Column(db.String(255))
+    role_name = db.Column(db.String(50))
+    dataset = db.Column(db.String(10))
 
     def __init__(self, id, name, image, role_name):
         self.id = id
@@ -28,7 +30,8 @@ class ActorModel(db.Model):
             'id': self.id,
             'name': self.name,
             'imageUrl': self.image,
-            'roleName': self.role_name
+            'roleName': self.role_name,
+            'dataset': self.dataset,
         }
 
     def save_to_db(self):
@@ -36,5 +39,16 @@ class ActorModel(db.Model):
         db.session.commit()
 
     @classmethod
+    def update_dataset_by_id(cls, actor_id: str, size: int):
+        actor = cls.find_by_id(actor_id)
+        actor.dataset = f'{size} images'
+        db.session.add(actor)
+        db.session.commit()
+
+    @classmethod
     def find_by_id(cls, id):
         return cls.query.filter_by(id=id).first()
+
+    @classmethod
+    def find_no_dataset_actors(cls):
+        return cls.query.filter_by(dataset=None).all()

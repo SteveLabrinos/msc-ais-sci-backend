@@ -13,6 +13,7 @@
 import requests
 from api_keys import RAPID_API_KEY
 
+TOP_CAST_SIZE = 2
 RAPID_API_HOST = "imdb8.p.rapidapi.com"
 BASE_URL = f"https://{RAPID_API_HOST}/title"
 
@@ -52,7 +53,6 @@ def get_movie(query_string: str) -> dict:
             "type": m_type,
             "image_url": m_img,
             "year": m_year,
-            # "cast": char_list
         }
 
         print(f"[INFO] Movie search completed - movie returned: {movie['title']}")
@@ -61,9 +61,8 @@ def get_movie(query_string: str) -> dict:
 
 # search for the 4 top cast of the movie based on the movie ID
 def get_cast(movie_id: str):
-    print('called')
     cast_url = BASE_URL + "/get-top-cast"
-    top_cast_id = imdb_request({"tconst": movie_id}, cast_url)[0:1]
+    top_cast_id = imdb_request({"tconst": movie_id}, cast_url)[0:TOP_CAST_SIZE]
 
     # search for cast information based on the name ID and the movie ID
     char_list = list()

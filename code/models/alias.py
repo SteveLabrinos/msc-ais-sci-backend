@@ -21,7 +21,7 @@ class MovieAliasModel(db.Model):
     movie_id = db.Column(db.String(20), db.ForeignKey(MovieModel.id))
 
     def __init__(self, alias, movie_id):
-        self.alias = alias.lower().strip().replace(' ', '_')
+        self.alias = alias
         self.movie_id = movie_id
 
     def json(self):

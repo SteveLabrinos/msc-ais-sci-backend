@@ -6,16 +6,13 @@
     Python Version: 3.8
 """
 
-from flask import Flask
-from imutils import paths
-from image_dataset import create_image_dataset
+from code.deep_learning.image_dataset import create_image_dataset
 from encode_faces import face_encoding
-from image_recognition import recognize_faces
 import video_frames as vf
 from screen_time import get_screen_time
-import video_search as vs
+from code.deep_learning import video_search as vs
 from video_download import download_youtube_list
-from movie_search import get_movie
+from code.deep_learning.movie_search import get_movie
 
 # Downloading a sample of the list to reduce time results
 MAX_VIDEO_SEARCH = 3

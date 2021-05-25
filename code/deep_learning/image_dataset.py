@@ -2,7 +2,7 @@
     File name: image_dataset.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 18/5/2021
-    Date last modified: 21/5/2021
+    Date last modified: 25/5/2021
     Python Version: 3.8
 """
 
@@ -31,9 +31,10 @@ def create_image_dataset(actor: str, movie: str, num_of_results=MAX_RESULTS):
         print(f"[Error] Creating of the directory {dir_path} failed")
         print(e)
     else:
+        group_size = min(GROUP_SIZE, num_of_results)
         # set the headers and search parameters
         headers = {"Ocp-Apim-Subscription-Key": BING_IMAGE_API}
-        params = {"q": actor, "offset": 0, "count": GROUP_SIZE}
+        params = {"q": actor, "offset": 0, "count": group_size}
         # make the search
         print("[INFO] searching Bing API for '{}'".format(actor))
         search = requests.get(URL, headers=headers, params=params)
@@ -47,15 +48,15 @@ def create_image_dataset(actor: str, movie: str, num_of_results=MAX_RESULTS):
         total = 0
 
         # loop over the estimated number of images in `GROUP_SIZE` groups
-        for offset in range(0, est_num_results, GROUP_SIZE):
+        for offset in range(0, est_num_results, group_size):
             # update the search parameters using the current offset, then
             # make the request to fetch the images
-            print(f"[INFO] making request for group {offset}-{offset + GROUP_SIZE} of {est_num_results}...")
+            print(f"[INFO] making request for group {offset}-{offset + group_size} of {est_num_results}...")
             params["offset"] = offset
             search = requests.get(URL, headers=headers, params=params)
             search.raise_for_status()
             results = search.json()
-            print(f"[INFO] saving images for group {offset}-{offset + GROUP_SIZE} of {est_num_results}...")
+            print(f"[INFO] saving images for group {offset}-{offset + group_size} of {est_num_results}...")
 
             # loop over the images
             for v in results["value"]:
