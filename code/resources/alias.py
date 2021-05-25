@@ -42,7 +42,9 @@ class MovieAlias(Resource):
             # check if the actor already exists
             actor = ActorModel.find_by_id(cast['id'])
             if actor:
+                # preparing the stored actor for new update
                 actor.role_name = cast['role_name']
+                actor.dataset = None
             else:
                 actor = ActorModel(**cast)
             movie.actors.append(actor)
