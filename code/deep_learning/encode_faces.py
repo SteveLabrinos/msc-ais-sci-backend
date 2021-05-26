@@ -21,6 +21,12 @@ def face_encoding(movie: str, model="hog"):
     print("[INFO] quantifying faces...")
     image_paths = list(paths.list_images(f"./dataset/actors/{movie}"))
 
+    try:
+        os.mkdir(f"./encodings")
+    except OSError as e:
+        print(f"[WARNING] Encodings folder already exists")
+        print(e)
+
     known_encodings = []
     known_names = []
 

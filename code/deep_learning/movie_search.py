@@ -13,7 +13,7 @@
 import requests
 from api_keys import RAPID_API_KEY
 
-TOP_CAST_SIZE = 2
+TOP_CAST_SIZE = 3
 RAPID_API_HOST = "imdb8.p.rapidapi.com"
 BASE_URL = f"https://{RAPID_API_HOST}/title"
 
