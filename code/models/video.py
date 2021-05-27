@@ -1,8 +1,8 @@
 """
-    File name: execution_in_sequence.py
+    File name: video.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 25/5/2021
-    Date last modified: 25/5/2021
+    Date last modified: 27/5/2021
     Python Version: 3.8
 """
 
@@ -27,11 +27,12 @@ class VideoModel(db.Model):
     dislike_count = db.Column(db.Integer)
     comment_count = db.Column(db.Integer)
     duration_sec = db.Column(db.Integer)
+    image_url = db.Column(db.String(255))
 
     movie_id = db.Column(db.String(20), db.ForeignKey('movie.id'))
     actors = db.relationship('ActorModel', secondary=video_actors)
 
-    def __init__(self, id, title, view_count, like_count, dislike_count, comment_count, duration_sec):
+    def __init__(self, id, title, view_count, like_count, dislike_count, comment_count, duration_sec, image_url):
         self.id = id
         self.title = title
         self.view_count = view_count
@@ -39,6 +40,7 @@ class VideoModel(db.Model):
         self.dislike_count = dislike_count
         self.comment_count = comment_count
         self.duration_sec = duration_sec
+        self.image_url = image_url
 
     def json(self):
         return {
@@ -49,6 +51,7 @@ class VideoModel(db.Model):
             'dislikeCount': self.dislike_count,
             'commentCount': self.comment_count,
             'durationSeconds': self.duration_sec,
+            'imageUrl': self.image_url,
             'movieId': self.movie_id,
             'actors': [self.get_duration(a).json() for a in self.actors]
         }

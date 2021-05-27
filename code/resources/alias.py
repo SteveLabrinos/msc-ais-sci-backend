@@ -1,8 +1,8 @@
 """
-    File name: execution_in_sequence.py
+    File name: alias.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 24/5/2021
-    Date last modified: 25/5/2021
+    Date last modified: 27/5/2021
     Python Version: 3.8
 """
 
@@ -25,7 +25,7 @@ class MovieAlias(Resource):
         movie_api = get_movie(alias)
         # if the search dont yield any results
         if movie_api is None:
-            return {'message': f'No movie found for alias {alias}'}
+            return {'message': f'No movie found for alias {alias}'}, 404
 
         movie = MovieModel(**movie_api)
         movie_alias = MovieAliasModel(alias, movie.id)

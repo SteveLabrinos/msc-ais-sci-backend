@@ -1,8 +1,8 @@
 """
-    File name: execution_in_sequence.py
+    File name: app.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 18/5/2021
-    Date last modified: 26/5/2021
+    Date last modified: 27/5/2021
     Python Version: 3.8
 """
 
@@ -14,9 +14,11 @@ from code.resources.alias import MovieAlias
 from code.resources.video import Video, VideoDownload, VideoFrames
 from code.resources.actor import ActorDataset, ActorEncoding, ActorScreenTime
 from flask_migrate import Migrate
+from flask_cors import CORS
 
 
 app = Flask(__name__)
+cors = CORS(app, resources={r'/api/*': {'origins': '*'}})
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///csi.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 api = Api(app)

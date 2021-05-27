@@ -1,8 +1,8 @@
 """
-    File name: execution_in_sequence.py
+    File name: video.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 24/5/2021
-    Date last modified: 25/5/2021
+    Date last modified: 27/5/2021
     Python Version: 3.8
 """
 
@@ -33,7 +33,7 @@ class Video(Resource):
             v.save_to_db()
 
         videos = VideoModel.find_by_movie(movie_id)
-        return {'message': [v.json() for v in videos]}
+        return {'videos': [v.json() for v in videos]}
 
 
 class VideoDownload(Resource):

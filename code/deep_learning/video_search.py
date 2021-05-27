@@ -1,8 +1,8 @@
 """
-    File name: execution_in_sequence.py
+    File name: video_search.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 19/5/2021
-    Date last modified: 25/5/2021
+    Date last modified: 27/5/2021
     Python Version: 3.8
 """
 
@@ -65,6 +65,8 @@ def deserialize_response(response_data):
             video_result['comment_count'] = stats['items'][0]['statistics']['commentCount']
         else:
             video_result['comment_count'] = None
+
+        video_result['image_url'] = search_result['snippet']['thumbnails']['default']['url']
 
         video_list.append(video_result)
 
