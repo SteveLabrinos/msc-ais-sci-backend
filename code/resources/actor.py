@@ -62,6 +62,9 @@ class ActorEncoding(Resource):
 class ActorScreenTime(Resource):
     def get(self, movie_id, learning_model):
         movie = MovieModel.find_by_id(movie_id)
+        # check if the actor screen times have already been calculated
+        if len(movie.videos[0].actors) > 0:
+            return {'videos': [v.json() for v in movie.videos.all()]}
 
         for video in movie.videos:
             video_actors = video_screen_time(movie_id, video.id, learning_model)

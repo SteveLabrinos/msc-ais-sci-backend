@@ -7,6 +7,7 @@
 """
 
 from flask_restful import Resource
+from imutils import paths
 from code.models.video import VideoModel
 from code.models.movie import MovieModel
 from code.deep_learning.video_search import youtube_search, deserialize_response
@@ -38,8 +39,17 @@ class Video(Resource):
 
 class VideoDownload(Resource):
     def get(self, movie_id):
+        # check if the videos have already been downloaded
+        path = f"./dataset/movies/{movie_id}/videos"
+        videos_path = list(paths.list_files(path))
+        if len(videos_path) > 0:
+            return {'message': 'Videos have already been downloaded'}
         # get the videos for the given movie
-        movie = MovieModel.find_by_id(movie_id)
+        try:
+            movie = MovieModel.find_by_id(movie_id)
+        except Exception as e:
+            return {'message': f'Error occurred while downloading videos from YouTube: {e}'}, 500
+
         video_id_list = [v.id for v in movie.videos]
         download_youtube_list(movie=movie_id, video_ids=video_id_list)
         return {'message': f'Video download completed for {len(video_id_list)} videos'}
@@ -47,6 +57,12 @@ class VideoDownload(Resource):
 
 class VideoFrames(Resource):
     def get(self, movie_id):
+        # check if the frames have already been produced
+        path = f"./dataset/movies/{movie_id}/frames"
+        frames_path = list(paths.list_files(path))
+        if len(frames_path) > 0:
+            return {'message': 'Frames have already been produced'}
+
         # get the frames for the movies downloaded videos
         movie = MovieModel.find_by_id(movie_id)
         for video in movie.videos:
@@ -56,6 +72,4 @@ class VideoFrames(Resource):
                 return {'message': f'Error occurred while producing video frames - {e}'}, 500
 
         return {'message': 'Video frames produced'}
-
-
 
