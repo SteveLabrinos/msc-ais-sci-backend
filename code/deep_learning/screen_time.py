@@ -9,12 +9,12 @@ from imutils import paths
 from code.deep_learning.image_recognition import recognize_faces
 
 
-def video_screen_time(movie: str, video_id: str, knowledge='pickle', model="hog") -> list:
+def video_screen_time(movie: str, video_id: str, model="hog") -> list:
     knowledge = f"./encodings/{movie}.pickle"
     # all the frames from the videos
     frame_paths = list(paths.list_images(f"./dataset/movies/{movie}/frames/{video_id}"))
 
-    print(f"[INFO] Starting screen time calculation for {video_id} video...")
+    print(f"[INFO] Starting screen time calculation for {video_id} video - model: {str(model).upper()}")
     actor_screen_time = dict()
     # get the faces and recognize the actors based on the trained model for all the frames
     for frame in frame_paths:
@@ -30,8 +30,6 @@ def video_screen_time(movie: str, video_id: str, knowledge='pickle', model="hog"
 
 
 def get_screen_time(movie: str, total_videos: int, model="hog") -> list:
-    # the trained encoding dataset for the classification model
-    encodings = f"./encodings/{movie}.pickle"
 
-    return [video_screen_time(movie, f"v_{v}", encodings, model=model) for v in range(total_videos)]
+    return [video_screen_time(movie, f"v_{v}", model=model) for v in range(total_videos)]
 
