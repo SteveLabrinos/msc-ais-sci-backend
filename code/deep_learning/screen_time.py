@@ -7,10 +7,13 @@
 """
 from imutils import paths
 from code.deep_learning.image_recognition import recognize_faces
+import pickle
 
 
 def video_screen_time(movie: str, video_id: str, model="hog") -> list:
-    knowledge = f"./encodings/{movie}.pickle"
+    knowledge_path = f"./encodings/{movie}.pickle"
+    # load the known faces and embeddings from the pickle file
+    data = pickle.loads(open(knowledge_path, "rb").read())
     # all the frames from the videos
     frame_paths = list(paths.list_images(f"./dataset/movies/{movie}/frames/{video_id}"))
 
@@ -18,7 +21,7 @@ def video_screen_time(movie: str, video_id: str, model="hog") -> list:
     actor_screen_time = dict()
     # get the faces and recognize the actors based on the trained model for all the frames
     for frame in frame_paths:
-        actors = recognize_faces(knowledge, frame, model=model)
+        actors = recognize_faces(data, frame, model=model)
         # calculate actors screen time based on the different frames recognized
         # because the program extracts one frame per second
         for actor in actors:

@@ -1,8 +1,8 @@
 """
-    File name: encode_faces.py
+    File name: image_recognition.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 19/5/2021
-    Date last modified: 20/5/2021
+    Date last modified: 30/5/2021
     Python Version: 3.8
 """
 # recognize faces for given images based on the face embeddings
@@ -14,9 +14,7 @@ import cv2
 
 # functions parameters: encodings.pickle path, the frame image, the model
 # HOG method is preferred for single CPU
-def recognize_faces(encodings_path, image_path, model="hog"):
-    # load the known faces and embeddings from the pickle file
-    data = pickle.loads(open(encodings_path, "rb").read())
+def recognize_faces(data, image_path: str, model="hog") -> list:
     # load the input image and convert it from BGR to RGB
     image = cv2.imread(image_path)
     rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -25,7 +23,7 @@ def recognize_faces(encodings_path, image_path, model="hog"):
     boxes = face_recognition.face_locations(rgb, model=model)
     encodings = face_recognition.face_encodings(rgb, boxes)
     # initialize the list of names for each face detected
-    names = []
+    names = list()
 
     # loop over the facial embeddings
     for encoding in encodings:
@@ -54,6 +52,5 @@ def recognize_faces(encodings_path, image_path, model="hog"):
         # update the list of names
         if name != "Unknown":
             names.append(name)
-    # print(f"[INFO] Found {len(names)} actors for the given image")
     # return the recognized faces found for the image
     return names

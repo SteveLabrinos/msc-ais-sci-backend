@@ -31,6 +31,7 @@ def face_encoding(movie: str, model="hog"):
     known_names = []
 
     # loop over the image paths
+    print('test')
     for (i, image_path) in enumerate(image_paths):
         # extract the person name from the image path
         print(f"[INFO] processing image {i + 1}/{len(image_paths)}")

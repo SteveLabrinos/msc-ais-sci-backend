@@ -45,6 +45,7 @@ class ActorEncoding(Resource):
         # check if the movie already has encoded its actors
         movie = MovieModel.find_by_id(movie_id)
         if movie.encodings:
+            print('[INFO] movie encodings already  exist')
             return {'message': 'Actor encodings is complete'}
         # create the pickle file with the encodings
         # for all the actors of the given movie
@@ -73,6 +74,8 @@ class ActorScreenTime(Resource):
                 actor.duration = a['duration']
                 video.actors.append(actor)
                 video.save_to_db()
+        # after the screen calculation has been completed delete the folder with the movies and encodings
+
 
         return {'videos': [v.json() for v in movie.videos.all()]}
 
