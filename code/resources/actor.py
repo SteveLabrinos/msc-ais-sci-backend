@@ -9,7 +9,8 @@
 from flask_restful import Resource
 from code.deep_learning.image_dataset import create_image_dataset
 from code.deep_learning.encode_faces import face_encoding
-from code.deep_learning.screen_time import get_screen_time, video_screen_time
+from code.deep_learning.screen_time import video_screen_time
+from code.deep_learning.file_cleanup import erase_files
 from code.models.actor import ActorModel
 from code.models.movie import MovieModel
 
@@ -75,7 +76,7 @@ class ActorScreenTime(Resource):
                 video.actors.append(actor)
                 video.save_to_db()
         # after the screen calculation has been completed delete the folder with the movies and encodings
-
+        erase_files(movie_id)
 
         return {'videos': [v.json() for v in movie.videos.all()]}
 
