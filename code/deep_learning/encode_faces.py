@@ -24,8 +24,7 @@ def face_encoding(movie: str, model="hog"):
     try:
         os.mkdir(f"./encodings")
     except OSError as e:
-        print(f"[WARNING] Encodings folder already exists")
-        print(e)
+        print(f"[WARNING] Encodings folder already exists - {e}")
 
     known_encodings = []
     known_names = []

@@ -1,5 +1,5 @@
 """
-    File name: execution_in_sequence.py
+    File name: movie_search.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 20/5/2021
     Date last modified: 21/5/2021

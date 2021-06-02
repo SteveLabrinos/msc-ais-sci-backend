@@ -12,9 +12,8 @@ import pickle
 import cv2
 
 
-# functions parameters: encodings.pickle path, the frame image, the model
 # HOG method is preferred for single CPU
-def recognize_faces(data, image_path: str, model="hog") -> list:
+def recognize_faces(data, image_path: str, model: str = "hog") -> list:
     # load the input image and convert it from BGR to RGB
     image = cv2.imread(image_path)
     rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -37,7 +36,7 @@ def recognize_faces(data, image_path: str, model="hog") -> list:
         if True in matches:
             # find the indexes of all matched faces then initialize a dictionary
             # to count the total number of times each face was matched
-            matched_indexes = [i for (i, b) in enumerate(matches) if b]
+            matched_indexes = [i for i, b in enumerate(matches) if b]
             # {key: name, value: True counts}
             counts = dict()
             # loop over the matched indexes and maintain a count for

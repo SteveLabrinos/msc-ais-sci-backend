@@ -12,7 +12,7 @@ import shutil
 
 # erase all the files that were produced during screen calculation
 # in order to save disk space
-def erase_files(movie_id: str):
+def erase_files(movie_id: str) -> None:
     # remove the encodings of the actors
     encodings_path = f'./encodings'
     remove_dir(encodings_path)
@@ -26,13 +26,13 @@ def erase_files(movie_id: str):
     remove_dir(movie_dir)
 
 
-def remove_dir(dir_path: str):
+def remove_dir(dir_path: str) -> None:
     try:
         shutil.rmtree(dir_path)
     except OSError as e:
-        print(f"[ERROR] Can't delete directory {dir_path}")
+        print(f"[ERROR] Can't delete directory {dir_path} - {e}")
 
 
-def remove_file(file_path: str):
+def remove_file(file_path: str) -> None:
     os.remove(file_path) if os.path.exists(file_path) else print(f"[ERROR] No encodings in {file_path}")
 

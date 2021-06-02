@@ -28,8 +28,7 @@ def create_image_dataset(actor, movie, num_of_results=MAX_RESULTS):
     try:
         os.makedirs(dir_path)
     except OSError as e:
-        print(f"[Error] Creating of the directory {dir_path} failed")
-        print(e)
+        print(f"[Error] Creating of the directory {dir_path} failed - {e}")
     else:
         group_size = min(GROUP_SIZE, num_of_results)
         # set the headers and search parameters
@@ -37,7 +36,7 @@ def create_image_dataset(actor, movie, num_of_results=MAX_RESULTS):
         query = f"{actor.name} - {movie.title}"
         params = {"q": query, "offset": 0, "count": group_size}
         # make the search
-        print("[INFO] searching Bing API for '{}'".format(query))
+        print(f"[INFO] searching Bing API for '{query}'")
         search = requests.get(URL, headers=headers, params=params)
         search.raise_for_status()
         # grab the images from the search, including the total number of
@@ -60,32 +59,28 @@ def create_image_dataset(actor, movie, num_of_results=MAX_RESULTS):
             print(f"[INFO] saving images for group {offset}-{offset + group_size} of {est_num_results}...")
 
             # loop over the images
-            for v in results["value"]:
-                # try to download the image
+            for value in results["value"]:
+                # download the image
                 try:
-                    # make a request to download the image
-                    print(f"[INFO] fetching: {v['contentUrl']}")
-                    r = requests.get(v["contentUrl"], timeout=30)
+                    print(f"[INFO] fetching: {value['contentUrl']}")
+                    request = requests.get(value["contentUrl"], timeout=30)
                     # build the path to the output image
-                    ext = v["contentUrl"][v["contentUrl"].rfind("."):]
-                    p = os.path.sep.join([dir_path, f"{str(total).zfill(8)}{ext}"])
+                    file_extension = value["contentUrl"][value["contentUrl"].rfind("."):]
+                    path = os.path.sep.join([dir_path, f"{str(total).zfill(8)}{file_extension}"])
                     # write the image to disk
-                    f = open(p, "wb")
-                    f.write(r.content)
-                    f.close()
+                    file = open(path, "wb")
+                    file.write(request.content)
+                    file.close()
                     # try to load the image from disk
-                    image = cv2.imread(p)
+                    image = cv2.imread(path)
                     # if the image is `None` then we could not properly load the
-                    # image from disk (so it should be ignored)
+                    # image from disk
                     if image is None:
-                        print(f"[INFO] deleting: {p}")
-                        os.remove(p)
+                        print(f"[INFO] deleting: {path}")
+                        os.remove(path)
                         continue
-                    # update the counter
                     total += 1
-                # catch any errors
                 except Exception as e:
-                    # check to see if our exception is in the list of exceptions
                     if type(e) in EXCEPTIONS:
-                        print(f"[INFO] skipping: {v['contentUrl']}")
+                        print(f"[INFO] skipping: {value['contentUrl']}")
                         continue

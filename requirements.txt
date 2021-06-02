@@ -13,3 +13,8 @@ google-api-python-client
 pytube
 youtube_dl
 isodate
+SQLAlchemy
+Flask-SQLAlchemy
+flask-cors
+Flask-RESTful
+flask-migrate
