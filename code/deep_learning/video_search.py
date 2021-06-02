@@ -48,23 +48,29 @@ def deserialize_response(response_data):
             id=search_result['id']['videoId']).execute()
 
         video_result['duration_sec'] = isodate.parse_duration(stats['items'][0]['contentDetails']['duration']).seconds
-        video_result['view_count'] = stats['items'][0]['statistics']['viewCount']
+
+        statistics = stats['items'][0]['statistics']
+
+        video_result['view_count'] = statistics['viewCount']
+        video_result['like_count'] = statistics['likeCount'] if 'likeCount' in statistics else None
+        video_result['dislike_count'] = statistics['dislikeCount'] if 'dislikeCount' in statistics else None
+        video_result['comment_count'] = statistics['commentCount'] if 'commentCount' in statistics else None
 
         # Not every video has likes/dislikes enabled]
-        if 'likeCount' in stats['items'][0]['statistics']:
-            video_result['like_count'] = stats['items'][0]['statistics']['likeCount']
-        else:
-            video_result['like_count'] = None
-
-        if 'dislikeCount' in stats['items'][0]['statistics']:
-            video_result['dislike_count'] = stats['items'][0]['statistics']['dislikeCount']
-        else:
-            video_result['dislike_count'] = None
-
-        if 'commentCount' in stats['items'][0]['statistics']:
-            video_result['comment_count'] = stats['items'][0]['statistics']['commentCount']
-        else:
-            video_result['comment_count'] = None
+        # if 'likeCount' in stats['items'][0]['statistics']:
+        #     video_result['like_count'] = stats['items'][0]['statistics']['likeCount']
+        # else:
+        #     video_result['like_count'] = None
+        #
+        # if 'dislikeCount' in stats['items'][0]['statistics']:
+        #     video_result['dislike_count'] = stats['items'][0]['statistics']['dislikeCount']
+        # else:
+        #     video_result['dislike_count'] = None
+        #
+        # if 'commentCount' in stats['items'][0]['statistics']:
+        #     video_result['comment_count'] = stats['items'][0]['statistics']['commentCount']
+        # else:
+        #     video_result['comment_count'] = None
 
         video_result['image_url'] = search_result['snippet']['thumbnails']['default']['url']
 

@@ -1,5 +1,5 @@
 """
-    File name: encode_faces.py
+    File name: video_frames.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 20/5/2021
     Date last modified: 20/5/2021
@@ -14,16 +14,16 @@ import os
 from imutils import paths
 
 
-def process_video_list(movie: str):
+def process_video_list(movie: str) -> None:
     path = f"./dataset/movies/{movie}/videos"
     videos_path = list(paths.list_files(path))
 
     for i, video_path in enumerate(videos_path):
         video = video_path.split(os.path.sep)[-1]
-        produce_video_frames(movie, video, i)
+        produce_video_frames(movie, video)
 
 
-def produce_video_frames(movie: str, video: str, counter=0):
+def produce_video_frames(movie: str, video: str) -> None:
     frames_path = f"./dataset/movies/{movie}/frames/{video}"
     os.makedirs(frames_path)
     video_path = f"./dataset/movies/{movie}/videos/{video}.mp4"

@@ -1,5 +1,5 @@
 """
-    File name: encode_faces.py
+    File name: screen_time.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 20/5/2021
     Date last modified: 20/5/2021

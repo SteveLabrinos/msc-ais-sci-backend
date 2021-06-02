@@ -59,7 +59,7 @@ def get_movie(query_string: str) -> dict:
         return movie
 
 
-# search for the 4 top cast of the movie based on the movie ID
+# search for the top cast of the movie based on the movie ID
 def get_cast(movie_id: str):
     cast_url = BASE_URL + "/get-top-cast"
     top_cast_id = imdb_request({"tconst": movie_id}, cast_url)[0:TOP_CAST_SIZE]

@@ -1,5 +1,5 @@
 """
-    File name: execution_in_sequence.py
+    File name: video_download.py
     Author: Steve Labrinos, Konstantinos Raptis
     Date created: 19/5/2021
     Date last modified: 20/5/2021
