@@ -58,7 +58,7 @@ class ActorEncoding(Resource):
         # update that the movie has encodings
         movie.encodings = 'completed'
         movie.save_to_db()
-        return {'message': f'Encoding of all actors completed'}
+        return {'message': 'Encoding of all actors completed'}
 
 
 class ActorScreenTime(Resource):

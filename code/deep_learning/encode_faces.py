@@ -17,7 +17,7 @@ import cv2
 import os
 
 
-def face_encoding(movie: str, model="hog"):
+def face_encoding(movie: str, model: str = "hog") -> None:
     print("[INFO] quantifying faces...")
     image_paths = list(paths.list_images(f"./dataset/actors/{movie}"))
 
@@ -31,9 +31,9 @@ def face_encoding(movie: str, model="hog"):
 
     # loop over the image paths
     print('test')
-    for (i, image_path) in enumerate(image_paths):
+    for (i, image_path) in enumerate(image_paths, start=1):
         # extract the person name from the image path
-        print(f"[INFO] processing image {i + 1}/{len(image_paths)}")
+        print(f"[INFO] processing image {i}/{len(image_paths)}")
         name = image_path.split(os.path.sep)[-2]
         # load the input image and convert it from BGR (OpenCV ordering)
         # to dlib ordering (RGB)
